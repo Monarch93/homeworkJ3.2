@@ -1,6 +1,7 @@
 package org.example.server;
 
 import java.sql.*;
+import java.sql.PreparedStatement;
 
 public class DBManager {
     private Connection connection = null;
@@ -16,7 +17,7 @@ public class DBManager {
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.out.println("Ошибка!");
+            System.out.println("Error!");
         }
     }
 
@@ -29,13 +30,13 @@ public class DBManager {
     }
 
     public String getNickByLoginAndPass(String login, String password) {
-        String nick;
         try {
-            ResultSet resultSet = statement.executeQuery("select nickname from users where login=\"" + login + "\" and password=\"" + password + "\"");
-            nick = resultSet.getString(1);
-            return nick;
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            PreparedStatement statement = connection.prepareStatement("select nickname from users where login=\"" + login + "\" and password=\"" + password + "\"");
+            statement.setString(1, login);
+            statement.setString(2, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return null;
     }
