@@ -1,5 +1,7 @@
 package org.example.server;
 
+import java.sql.SQLException;
+
 public class BaseAuthService implements AuthService {
     private DBManager dbManager;
 
@@ -18,7 +20,7 @@ public class BaseAuthService implements AuthService {
     }
 
     @Override
-    public String getNickByLoginAndPass(String login, String password) {
+    public String getNickByLoginAndPass(String login, String password) throws SQLException {
         return dbManager.getNickByLoginAndPass(login, password);
     }
 }

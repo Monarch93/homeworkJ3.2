@@ -29,17 +29,19 @@ public class DBManager {
         }
     }
 
-    public String getNickByLoginAndPass(String login, String password) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("select nickname from users where login=\"" + login + "\" and password=\"" + password + "\"");
-            statement.setString(1, login);
-            statement.setString(2, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    public String getNickByLoginAndPass(String login, String password) throws SQLException {
+        try (final PreparedStatement preparedStatement = connection.prepareStatement("select nickname from users(login, password) VALUES (" + login + ", " + password + ")"){
+            preparedStatement.setString(1, login);
+            preparedStatement.setInt(2, Integer.parseInt(password));
+            final ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                System.out.printf("%d - %s - %d\n", resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3));
+            }
         }
-        return null;
     }
+
+
+
 
     public void changeNick(String oldNick, String newNick) {
         try {
