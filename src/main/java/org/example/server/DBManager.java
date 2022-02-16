@@ -40,12 +40,9 @@ public class DBManager {
         }
     }
 
-
-
-
-    public void changeNick(String oldNick, String newNick) {
+    public void changeNick(String oldlogin, String newlogin) {
         try {
-            statement.executeUpdate("update 'users' set nickname=\""+newNick+"\" where nickname=\""+oldNick+"\"");
+            statement.executeUpdate("update 'users' set nickname=(oldlogin, newlogin) VALUES (" + oldlogin + ", " + newlogin + ")");
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
